@@ -19,7 +19,8 @@ app.post("/process-video", async (req, res) => {
         }
     } catch (err) {
         console.log("Error:", err);
-        return res.status(400).send("Bad Request: missing file name!");
+        res.status(400).send("Bad Request: missing file name!");
+        return;
     }
 
     const inputFileName = data.name;
@@ -50,7 +51,8 @@ app.post("/process-video", async (req, res) => {
         deleteProcessedVideo(outputFileName)
     ]);
 
-    return res.status(200).send(`Processing finished.`);
+    res.status(200).send(`Processing finished.`);
+    return;
 
 });
 

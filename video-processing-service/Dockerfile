@@ -11,6 +11,7 @@ FROM node:18
 RUN apt-get update && apt-get install -y ffmpeg
 WORKDIR /app
 COPY package*.json ./
+# do not install production dependencies!
 RUN npm install --only=production
 # serve only compiled files from dist
 COPY --from=builder /app/dist ./dist
