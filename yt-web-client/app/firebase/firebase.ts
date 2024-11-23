@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-// TODO: fix this
+
 import { initializeApp } from "firebase/app";
 import {
     getAuth,
