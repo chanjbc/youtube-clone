@@ -1,20 +1,20 @@
 import { initializeApp } from "firebase/app";
 import {
-    getAuth,
-    signInWithPopup,
-    GoogleAuthProvider,
-    onAuthStateChanged,
-    User
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  User
 } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDkJDhjTyo3iIyuZHmyNxUfQXTvyBaXgG4",
-    authDomain: "yt-clone-3cd30.firebaseapp.com",
-    projectId: "yt-clone-3cd30",
-    appId: "1:475659724945:web:4279914f47bb3c8cbdf730",
-    measurementId: "G-GWWSPCRFWM"
+  apiKey: "AIzaSyDkJDhjTyo3iIyuZHmyNxUfQXTvyBaXgG4",
+  authDomain: "yt-clone-3cd30.firebaseapp.com",
+  projectId: "yt-clone-3cd30",
+  appId: "1:475659724945:web:4279914f47bb3c8cbdf730",
+  measurementId: "G-GWWSPCRFWM"
 };
 
 // Initialize Firebase
@@ -27,7 +27,7 @@ const auth = getAuth(app);
  * @returns a promise that resolves with the user's credentials 
  */
 export function signInWithGoogle() {
-    return signInWithPopup(auth, new GoogleAuthProvider());
+  return signInWithPopup(auth, new GoogleAuthProvider());
 }
 
 /**
@@ -35,7 +35,7 @@ export function signInWithGoogle() {
  * @returns a promise thtat resolves when the user has signed out
  */
 export function signOut() {
-    return auth.signOut();
+  return auth.signOut();
 }
 
 /**
@@ -43,5 +43,5 @@ export function signOut() {
  * @returns a function to unsubscribe callback
  */
 export function onAuthStateChangedHelper(callback: (user: User | null) => void) {
-    return onAuthStateChanged(auth, callback);
+  return onAuthStateChanged(auth, callback);
 }

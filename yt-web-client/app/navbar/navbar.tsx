@@ -12,26 +12,26 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
 
-    // init user state to null
-    const [user, setUser] = useState<User | null>(null);
+  // init user state to null
+  const [user, setUser] = useState<User | null>(null);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChangedHelper((user) => {
-            setUser(user);
-        });
-        
-        // clean up subscription on unmount
-        return () => unsubscribe();
-    }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedHelper((user) => {
+      setUser(user);
+    });
+    
+    // clean up subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
-    return (
-        <nav className={styles.nav}>
-            <Link href="/">
-                <Image width={90} height={20} src="/youtube-logo.svg" alt="YouTube Logo" />
-            </Link>
-            {/* TODO: add upload button */}
-            
-            <SignIn user={user} />
-        </nav>
-    );
+  return (
+    <nav className={styles.nav}>
+      <Link href="/">
+        <Image width={90} height={20} src="/youtube-logo.svg" alt="YouTube Logo" />
+      </Link>
+      {/* TODO: add upload button */}
+      
+      <SignIn user={user} />
+    </nav>
+  );
 }
