@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./navbar.module.css";
@@ -20,7 +22,7 @@ export default function Navbar() {
         
         // clean up subscription on unmount
         return () => unsubscribe();
-    });
+    }, []);
 
     return (
         <nav className={styles.nav}>
