@@ -21,6 +21,7 @@ export const createUser = auth.user().onCreate((user: UserRecord) => {
     email: user.email,
     photoUrl: user.photoURL,
   };
+
   // add record, creating collections and document if not present
   firestore.collection("users").doc(user.uid).set(userInfo);
   logger.info(`User created: ${JSON.stringify(userInfo)}`);
@@ -28,7 +29,8 @@ export const createUser = auth.user().onCreate((user: UserRecord) => {
 });
 
 /**
- * 
+ * Creates a signed url that allows users to upload to the raw videos bucket
+ * @returns the url and the new file name
  */
 export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
   // check if user is authenticated
@@ -38,7 +40,7 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
       "User must be authenticated."
     );
   }
-  
+
   const auth = request.auth;
   const data = request.data;
   const bucket = storage.bucket(rawVideoBucketName);
@@ -50,8 +52,8 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
     version: "v4",
     action: "write",
     // expires in 15 min
-    expires: Date.now() + 15^60*1000
+    expires: Date.now() + 15^60*1000,
   });
 
-  return {url, fileName}
+  return {url, fileName};
 });
