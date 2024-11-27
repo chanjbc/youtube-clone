@@ -1,5 +1,6 @@
 import express from "express";
 import { convertVideo, deleteProcessedVideo, deleteRawVideo, downloadRawVideo, setupDirectories, uploadProcessedVideo } from "./storage";
+import { isVideoNew, setVideo } from "./firebase";
 
 
 
@@ -19,15 +20,28 @@ app.post("/process-video", async (req, res) => {
     }
   } catch (err) {
     console.log("Error:", err);
-    res.status(400).send("Bad Request: missing file name!");
+    res.status(400).send("Bad Request: missing file name.");
     return;
   }
 
   const inputFileName = data.name;
   const outputFileName = `processed-${inputFileName}`;
+  const videoId = inputFileName.split(".")[0];
+
+  if (!isVideoNew(videoId)) {
+    res.status(400).send("Bad Request: video already processing or processed.");
+    return;
+  } 
+  setVideo(videoId, {
+    id: videoId,
+    uid: videoId.split("-")[0],
+    status: "processing",
+  });
+  
 
   // download raw video from cloud storage
   await downloadRawVideo(inputFileName);
+  
   
   // convert to 360p locally - could fail
   try {
@@ -41,19 +55,25 @@ app.post("/process-video", async (req, res) => {
     res.status(500).send("Internal Server Error: video processing failed!");
     return;
   }
-
+  
   // upload processed video to cloud storage
   await uploadProcessedVideo(outputFileName);
+  
+  setVideo(videoId, {
+    id: videoId,
+    status: "processed",
+    filename: outputFileName,
+  });
 
   // clean up by deleting local files
   await Promise.all([
     deleteRawVideo(inputFileName),
     deleteProcessedVideo(outputFileName)
   ]);
-
+  
   res.status(200).send(`Processing finished.`);
   return;
-
+  
 });
 
 const port = process.env.PORT || 3000;

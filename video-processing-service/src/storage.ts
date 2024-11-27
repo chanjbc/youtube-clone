@@ -57,7 +57,7 @@ export function deleteProcessedVideo(fileName: string) {
 }
 
 /**
- * Deletes a local file
+ * Deletes a file locally
  * @param filePath - path of file to delete
  * @returns a promise that resolves once the file has been deleted
  */
