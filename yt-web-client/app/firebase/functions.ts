@@ -12,7 +12,7 @@ export async function uploadVideo(file: File) {
   });
 
   // use signed URL to upload file
-  await fetch(response?.data?.url, {
+  const uploadResult = await fetch(response?.data?.url, {
     method: "PUT",
     body: file,
     headers: {
@@ -20,5 +20,5 @@ export async function uploadVideo(file: File) {
     },
   });
 
-  return;
+  return uploadResult;
 }

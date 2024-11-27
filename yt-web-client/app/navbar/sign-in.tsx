@@ -10,6 +10,7 @@ interface SignInProps {
 
 export default function SignIn({ user }: SignInProps) {
   return (
+    // using a fragment to return multiple HTML elements
     <Fragment>
       { user ? 
         (

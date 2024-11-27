@@ -52,7 +52,7 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
     version: "v4",
     action: "write",
     // expires in 15 min
-    expires: Date.now() + 15^60*1000,
+    expires: Date.now() + 15*60*1000,
   });
 
   return {url, fileName};
