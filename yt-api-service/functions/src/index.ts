@@ -23,7 +23,7 @@ export interface Video {
   filename?: string,
   status?: "processing" | "processed",
   title?: string,
-  description?: string
+  description?: string,
 }
 
 export const createUser = auth.user().onCreate((user: UserRecord) => {
@@ -73,7 +73,7 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
  * @returns Firestore docs for up to 10 videos
  */
 export const getVideos = onCall({maxInstances: 1}, async () => {
-  const snapshot = 
+  const snapshot =
     await firestore.collection(videoCollectionId).limit(10).get();
   return snapshot.docs.map((doc) => doc.data());
 });

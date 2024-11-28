@@ -1,5 +1,5 @@
 import express from "express";
-import { convertVideo, deleteProcessedVideo, deleteRawVideo, downloadRawVideo, setupDirectories, uploadProcessedVideo } from "./storage";
+import { convertVideo, deleteProcessedVideoLocal, deleteRawVideoLocal, downloadRawVideo, setupDirectories, uploadProcessedVideo } from "./storage";
 import { isVideoNew, setVideo } from "./firebase";
 
 
@@ -31,34 +31,36 @@ app.post("/process-video", async (req, res) => {
   if (!isVideoNew(videoId)) {
     res.status(400).send("Bad Request: video already processing or processed.");
     return;
-  } 
+  }
+
+  // update status in Firestore
   setVideo(videoId, {
     id: videoId,
     uid: videoId.split("-")[0],
     status: "processing",
   });
-  
 
-  // download raw video from cloud storage
+  // download raw video from Cloud Storage buckets
   await downloadRawVideo(inputFileName);
-  
-  
-  // convert to 360p locally - could fail
+
+  // transcode to 360p locally - could fail
   try {
     await convertVideo(inputFileName, outputFileName);
   } catch (err) {
     await Promise.all([
-      deleteRawVideo(inputFileName),
-      deleteProcessedVideo(outputFileName)
+      // if transcoding fails, clean up local videos and bucket
+      deleteRawVideoLocal(inputFileName),
+      deleteProcessedVideoLocal(outputFileName),
     ]);
     console.log(err);
-    res.status(500).send("Internal Server Error: video processing failed!");
+    res.status(500).send("Internal Server Error: video processing failed.");
     return;
   }
-  
-  // upload processed video to cloud storage
+
+  // upload processed video to Cloud Storage
   await uploadProcessedVideo(outputFileName);
-  
+
+  // set 
   setVideo(videoId, {
     id: videoId,
     status: "processed",
@@ -67,13 +69,12 @@ app.post("/process-video", async (req, res) => {
 
   // clean up by deleting local files
   await Promise.all([
-    deleteRawVideo(inputFileName),
-    deleteProcessedVideo(outputFileName)
+    deleteRawVideoLocal(inputFileName),
+    deleteProcessedVideoLocal(outputFileName),
   ]);
-  
+
   res.status(200).send(`Processing finished.`);
   return;
-  
 });
 
 const port = process.env.PORT || 3000;

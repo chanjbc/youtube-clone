@@ -32,7 +32,7 @@ function ensureDirectoryExistence(dirPath: string) {
   if (!fs.existsSync(dirPath)) {
     // use recursive to create nested directories
     fs.mkdirSync(dirPath, { recursive: true });
-    console.log(`Directory ${dirPath} created successfully`)
+    console.log(`Directory ${dirPath} created successfully.`);
   }
 }
 
@@ -43,7 +43,7 @@ function ensureDirectoryExistence(dirPath: string) {
  * @param fileName - name of file to delete
  * @returns a promise that resolves once the file has been deleted
  */
-export function deleteRawVideo(fileName: string) {
+export function deleteRawVideoLocal(fileName: string) {
   return deleteFile(`${localRawVideoPath}/${fileName}`);
 }
 
@@ -52,7 +52,7 @@ export function deleteRawVideo(fileName: string) {
  * @param fileName - name of file to delete
  * @returns a promise that resolves once the file has been deleted
  */
-export function deleteProcessedVideo(fileName: string) {
+export function deleteProcessedVideoLocal(fileName: string) {
   return deleteFile(`${localProcessedVideoPath}/${fileName}`);
 }
 
