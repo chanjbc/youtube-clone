@@ -7,7 +7,7 @@ import SignIn from "./sign-in"
 
 import { onAuthStateChangedHelper } from "../firebase/firebase";
 import { User } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Upload from "./upload";
 
 
@@ -26,14 +26,17 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={styles.nav}>
-      <Link href="/">
-        <Image width={90} height={20} src="/youtube-logo.svg" alt="YouTube Logo" />
-      </Link>
-      <div className={styles.buttonContainer}>
-        {user && <Upload />}
-        <SignIn user={user} />
-      </div>
-    </nav>
+    <Fragment>
+      <nav className={styles.nav}>
+        <Link href="/">
+          <Image width={90} height={20} src="/youtube-logo.svg" alt="YouTube Logo" />
+        </Link>
+        <div className={styles.buttonContainer}>
+          {user && <Upload />}
+          <SignIn user={user} />
+        </div>
+      </nav>
+      {!user && <div style={{textAlign: "center"}}>Sign in to upload a video</div>}
+    </Fragment>
   );
 }
