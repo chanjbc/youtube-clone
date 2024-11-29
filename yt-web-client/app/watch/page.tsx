@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { useSearchParams } from "next/navigation";
 
 function WatchContent() {
-  const videoPrefix = "https://storage.googleapis.com/chanjbc-yt-processed-videos/";
+  const videoPrefix = "https://storage.googleapis.com/chanjbc-processed-video-bucket/";
   const videoSrc = useSearchParams().get("v");
 
   return (

@@ -30,10 +30,10 @@ export default function Navbar() {
       <Link href="/">
         <Image width={90} height={20} src="/youtube-logo.svg" alt="YouTube Logo" />
       </Link>
-      {
-        user && <Upload />
-      }
-      <SignIn user={user} />
+      <div className={styles.buttonContainer}>
+        {user && <Upload />}
+        <SignIn user={user} />
+      </div>
     </nav>
   );
 }
