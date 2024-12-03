@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
 import {Firestore} from "firebase-admin/firestore";
-import {auth, https} from "firebase-functions/v1";
+import {auth, firebaseConfig, https} from "firebase-functions/v1";
 import {UserRecord} from "firebase-functions/lib/common/providers/identity";
 import * as logger from "firebase-functions/logger";
 
@@ -26,13 +26,17 @@ export interface Video {
   description?: string,
 }
 
+
+/**
+ * Creates a user in Firestore
+ */
 export const createUser = auth.user().onCreate((user: UserRecord) => {
+  // information to collect from users
   const userInfo = {
     uid: user.uid,
     email: user.email,
     photoUrl: user.photoURL,
   };
-
   // add record, creating collections and document if not present
   firestore.collection("users").doc(user.uid).set(userInfo);
   logger.info(`User created: ${JSON.stringify(userInfo)}`);

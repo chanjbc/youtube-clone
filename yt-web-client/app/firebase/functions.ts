@@ -1,7 +1,9 @@
 import {httpsCallable} from "firebase/functions";
 import {functions} from "./firebase";
 
-const generateUploadUrl = httpsCallable(functions, "generateUploadUrl");
+const generateUploadUrlFunction = httpsCallable(functions, "generateUploadUrl");
+const uploadMetadataFunction = httpsCallable(functions, "uploadMetadata");
+const uploadThumbnailFunction = httpsCallable(functions, "uploadThumbnail");
 const getVideosFunction = httpsCallable(functions, "getVideos");
 
 export interface Video {
@@ -19,9 +21,8 @@ export interface GenerateUploadUrlResponse {
 }
 
 export async function uploadVideo(file: File) {
-
   // call Firebase function to generate signed URL
-  const response = await generateUploadUrl({
+  const response = await generateUploadUrlFunction({
     fileExtension: file.name.split(".").pop(),
   }) as { data: GenerateUploadUrlResponse };
 

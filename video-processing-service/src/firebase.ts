@@ -18,9 +18,8 @@ export interface Video {
 }
 
 /**
- * 
- * @param videoId 
- * @returns 
+ * @param videoId - a string, in the format of {uid}-{date of publication}
+ * @returns the video information or null
  */
 async function getVideo(videoId: string) {
   const snapshot = await firestore.collection(videoCollectionId).doc(videoId).get();
