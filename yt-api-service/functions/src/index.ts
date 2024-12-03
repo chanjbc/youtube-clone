@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
 import {Firestore} from "firebase-admin/firestore";
-import {auth, firebaseConfig, https} from "firebase-functions/v1";
+import {auth, https} from "firebase-functions/v1";
 import {UserRecord} from "firebase-functions/lib/common/providers/identity";
 import * as logger from "firebase-functions/logger";
 
